@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+
+        <input type="text" id="chat">
+
+    <button id="submit">Send</button>
+    <ul id="chat-history"></ul>
+
+    <script type="text/javascript">
+        const socket = io();
+socket.on("connect", () => {
+  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+});
+
+$("#submit").on("click", function(){
+    const message = $("#chat").val();
+    console.log(message)
+    socket.emit("chat", message)
+})
+
+socket.on("newChat", chatHistory => {
+    console.log(chatHistory);
+$("#chat-history").html(chatHistory.map(a => `<li>${a}</li>`).join(""));
+
+})
+    </script>
+</body>
+</html>
